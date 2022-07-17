@@ -66,21 +66,30 @@
         wsClient.close();
       }
 
+      // Create a new WebSocket connection with the server using the ws protocol.
+      const URL = 'ws://localhost:' + PORT;
+      wsClient = new WebSocket(URL);
 
-      // TODO: 
-      // Exercise 4: Create a new WebSocket connection with the server using the ws protocol.
-      const URL = '??://localhost:' + PORT;
-
+      // Respond to connections by defining the .onopen event handler.
+      wsClient.onopen = (event) => {
+        console.log('Connected to the WebSocket server!');
+        wsClient.send(JSON.stringify({
+          type: 'NEW_USER'
+        }));
+      }
 
       // TODO:
-      // Exercise 5: Respond to connections by defining the .onopen event handler.
-
-
-      // TODO:
-      // Exercise 7: Respond to messages from the servery by defining the .onmessage event handler
-      // Exercise 9: Parse custom message types, formatting each message based on the type.
-
-
+      // Respond to messages from the servery by defining the .onmessage event handler
+      wsClient.onmessage = (messageEvent) => {
+        const { type, payload } = JSON.parse(messageEvent.data);
+        if (type === 'NEW_MESSAGE') {
+          console.log('message received: ' + payload.message);
+          showMessageReceived(payload.message);
+        } else if (type === 'NEW_USER') {
+          showMessageReceived('New user joined!');
+        }
+        
+      }
 
       /* Note:
       The event handlers below are useful for properly cleaning up a closed/broken WebSocket client connection.
@@ -107,9 +116,14 @@
         return;
       }
       
-      // TODO: 
-      // Exercise 6: Send the message from the messageBox to the server
-      // Exercise 9: Send the message in a custom message object with .type and .payload properties
+       
+      // Send the message from the messageBox to the server
+      const data = {
+        type: 'NEW_MESSAGE',
+        payload: { message: message } 
+      }
+      wsClient.send(JSON.stringify(data));
+      
     }
 
     ////////////////////////////////////////////////
