@@ -54,8 +54,7 @@ wsServer.on("connection", (socket) => {
 ///////////////////////////////////////////////
 
 function broadcast(data, socketToOmit) {
-  // TODO
-  // Exercise 8: Implement the broadcast pattern. Exclude the emitting socket!
+  // Implement the broadcast pattern. Exclude the emitting socket!
   wsServer.clients.forEach((connectedClient) => {
     if (
       connectedClient.readyState === WebSocket.OPEN &&

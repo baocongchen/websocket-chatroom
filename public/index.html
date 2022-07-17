@@ -78,7 +78,6 @@
         }));
       }
 
-      // TODO:
       // Respond to messages from the servery by defining the .onmessage event handler
       wsClient.onmessage = (messageEvent) => {
         const { type, payload } = JSON.parse(messageEvent.data);
